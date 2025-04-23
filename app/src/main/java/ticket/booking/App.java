@@ -17,6 +17,8 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println("Running Train Booking System");
+        System.out.println("Just a testing line, ignore this");
+        System.out.println("Learning the working of git revert");
         Scanner scanner = new Scanner(System.in);
         int option = 0;
         UserBookingService userBookingService;
