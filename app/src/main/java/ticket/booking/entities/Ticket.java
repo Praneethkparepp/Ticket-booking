@@ -27,19 +27,27 @@ public class Ticket{
 
     private Train train;
 
-    public Ticket(){}
+    private int row;
+    private int col;
 
-    public Ticket(String ticketId, String userId, String source, String destination, String dateOfTravel, Train train){
+    public Ticket(){
+        this.row = -1;
+        this.col = -1;
+    }
+
+    public Ticket(String ticketId, String userId, String source, String destination, String dateOfTravel, Train train, int row, int col){
         this.ticketId = ticketId;
         this.userId = userId;
         this.source = source;
         this.destination = destination;
         this.dateOfTravel = dateOfTravel;
         this.train = train;
+        this.row = row;
+        this.col = col;
     }
 
     public String getTicketInfo(){
-        return String.format("Ticket ID: %s belongs to User %s from %s to %s on %s", ticketId, userId, source, destination, dateOfTravel);
+        return String.format("Ticket ID: %s belongs to User %s from %s to %s on %s, Train: %s, Seat: [R%d, C%d]", ticketId, userId, source, destination, dateOfTravel, train.getTrainId(), row, col);
     }
 
     public String getTicketId(){
@@ -90,4 +98,19 @@ public class Ticket{
         this.train = train;
     }
 
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
 }

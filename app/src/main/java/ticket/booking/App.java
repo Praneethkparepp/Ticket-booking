@@ -100,6 +100,19 @@ public class App {
                         System.out.println("Can't book this seat");
                     }
                     break;
+                case 6:
+                    System.out.println("Enter the Ticket ID to cancel:");
+                    String ticketIdToCancel = scanner.next();
+                    // userBookingService is initialized outside the loop,
+                    // and re-initialized upon successful login (case 2).
+                    // The cancelBooking method itself checks for logged-in user.
+                    if (userBookingService != null) {
+                        userBookingService.cancelBooking(ticketIdToCancel);
+                    } else {
+                        // This state should ideally not be reached if login flow is enforced for options 3-6
+                        System.out.println("Critical error: UserBookingService not initialized.");
+                    }
+                    break;
                 default:
                     break;
             }

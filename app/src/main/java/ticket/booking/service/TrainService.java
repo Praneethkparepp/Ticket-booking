@@ -43,6 +43,44 @@ public class TrainService {
         }
     }
 
+    public boolean makeSeatAvailable(String trainId, int row, int col) {
+        Optional<Train> trainOptional = this.trainList.stream()
+                .filter(t -> t.getTrainId().equalsIgnoreCase(trainId))
+                .findFirst();
+
+        if (trainOptional.isPresent()) {
+            Train train = trainOptional.get();
+            List<List<Integer>> seats = train.getSeats();
+
+            // Validate row and column
+            if (row >= 0 && row < seats.size() && col >= 0 && col < seats.get(row).size()) {
+                if (seats.get(row).get(col) == 1) { // If seat is booked (1)
+                    seats.get(row).set(col, 0); // Mark as available (0)
+                    // train.setSeats(seats); // Already modifying the seats list in the train object directly
+                    saveTrainListToFile(); // Persist changes
+                    System.out.println("Seat [" + row + ", " + col + "] in train " + trainId + " is now available.");
+                    return true;
+                } else { // Seat was already available (0)
+                    System.out.println("Seat [" + row + ", " + col + "] in train " + trainId + " was already available.");
+                    return true;
+                }
+            } else {
+                // Constructing a more informative error message for invalid row/col
+                String maxColForRow;
+                if (row >= 0 && row < seats.size()) {
+                    maxColForRow = String.valueOf(seats.get(row).size() - 1);
+                } else {
+                    maxColForRow = "N/A (invalid row)";
+                }
+                System.out.println("Invalid row (" + row + ") or column (" + col + ") for train " + trainId + ". Max row index: " + (seats.size() - 1) + ", Max col index for row " + row + ": " + maxColForRow);
+                return false;
+            }
+        } else {
+            System.out.println("Train with ID " + trainId + " not found. Seat not updated.");
+            return false;
+        }
+    }
+
     public void updateTrain(Train updatedTrain) {
         // Find the index of the train with the same trainId
         OptionalInt index = IntStream.range(0, trainList.size())
